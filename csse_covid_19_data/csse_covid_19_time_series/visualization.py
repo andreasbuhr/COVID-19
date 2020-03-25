@@ -1,11 +1,11 @@
 import pandas as pd
 
-df = pd.read_csv("time_series_19-covid-Confirmed.csv")
+df = pd.read_csv("time_series_covid19_confirmed_global.csv")
 
 def extract_line(name):
     gerline = df[df["Country/Region"] == name]
     gerline = gerline.drop(columns=["Lat", "Long", "Country/Region", "Province/State"])
-    if name == "US":
+    if len(gerline) > 1:
         gerline = pd.DataFrame(gerline.sum())
     else:
         gerline = gerline.T
@@ -36,10 +36,12 @@ population = {
     "Japan": 126010000,
     "Netherlands": 17445781,
     "Denmark": 5800000,
+    "United Kingdom": 67000000,
 }
 
 ax = plt.gca()
 i = ["Italy", "Germany", "Switzerland", "Spain", "US", "Japan", "Netherlands", "Denmark"]
+i = ["Italy", "Germany", "US", "United Kingdom"]
 for c in i:
     data = extract_line(c)
     data /= (population[c] / 1e6)
